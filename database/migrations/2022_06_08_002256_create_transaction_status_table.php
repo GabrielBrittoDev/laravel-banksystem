@@ -4,10 +4,10 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateTransactionStatusTable extends Migration
 {
+    private string $tableName = 'transaction_status';
 
-    private string $tableName = 'users';
     /**
      * Run the migrations.
      *
@@ -17,16 +17,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('role_id');
-            $table->string('name');
-            $table->string('username')->unique();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('description');
             $table->timestamps();
-
-            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 
