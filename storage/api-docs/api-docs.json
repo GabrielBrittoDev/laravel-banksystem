@@ -1,0 +1,596 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Bank system api documentation",
+        "description": "Bank Swagger OpenApi description",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:5000",
+            "description": "Bank API Server"
+        }
+    ],
+    "paths": {
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login a User",
+                "description": "Authenticate and return access token to user",
+                "operationId": "Login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Invalid Data"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout a User",
+                "description": "Revoke User token",
+                "operationId": "Logout",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/": {
+            "get": {
+                "operationId": "e1fcc87875e54aadc53c2ec05b37e53c",
+                "responses": {
+                    "200": {
+                        "description": "Display Framework(Laravel) Version"
+                    }
+                }
+            }
+        },
+        "/api/transaction/deposit": {
+            "post": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Create a new transaction deposit",
+                "description": "Create a new transaction of type deposit",
+                "operationId": "CreateDepositTransaction",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionDepositRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Invalid Data"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/transaction/": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "List user transactions",
+                "description": "Return all user transactions",
+                "operationId": "ListTransactions",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionListRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Invalid Data"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/transaction/purchase": {
+            "post": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Create a new transaction purchase",
+                "description": "Create a new transaction of type purchase",
+                "operationId": "CreatePurchaseTransaction",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionPurchaseRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Invalid Data"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/transaction/admin/finish-deposit/{transactionId}": {
+            "post": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Finish deposit transaction",
+                "description": "Update transaction to APPROVED or REJECTED",
+                "operationId": "CreateFinishDepositTransaction",
+                "parameters": [
+                    {
+                        "name": "transactionId",
+                        "in": "path",
+                        "description": "Transaction id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionFinishDepositRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Invalid Data"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/transaction/admin/pending-deposits": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "List pending deposit transactions",
+                "description": "Return all deposit transactions pending",
+                "operationId": "ListPendingDepositTransactions",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionPendingDepositsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "422": {
+                        "description": "Invalid Data"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/user": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create a new customer User",
+                "description": "Create and return a new Customer User with his access token",
+                "operationId": "CreateUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Invalid Data"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Transaction": {
+                "title": "Transaction",
+                "description": "Transaction model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "amount": {
+                        "title": "Amount",
+                        "description": "Amount of the transaction",
+                        "type": "number",
+                        "format": "float64",
+                        "example": "100.00"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "description": "Description of the transaction",
+                        "type": "string",
+                        "example": "New backpack"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "user_id": {
+                        "title": "User ID",
+                        "description": "User id of the transaction",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Transaction"
+                }
+            },
+            "LoginRequest": {
+                "title": "Login request",
+                "description": "Login with body data",
+                "required": [
+                    "username",
+                    "password"
+                ],
+                "properties": {
+                    "username": {
+                        "title": "username",
+                        "description": "Username of the User",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Max02"
+                    },
+                    "password": {
+                        "title": "password",
+                        "description": "User password",
+                        "type": "string",
+                        "format": "string",
+                        "example": "password123"
+                    }
+                },
+                "type": "object"
+            },
+            "TransactionDepositRequest": {
+                "title": "Create deposit request",
+                "description": "Create deposit with body data",
+                "required": [
+                    "file",
+                    "amount"
+                ],
+                "properties": {
+                    "file": {
+                        "title": "file",
+                        "description": "Check image file",
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "amount": {
+                        "title": "amount",
+                        "description": "Check value",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 100
+                    }
+                },
+                "type": "object"
+            },
+            "TransactionFinishDepositRequest": {
+                "title": "Finish deposit request",
+                "description": "Finish deposit with option given",
+                "required": [
+                    "option"
+                ],
+                "properties": {
+                    "option": {
+                        "title": "option",
+                        "description": "Option to finalize deposit [2=APPROVED|3=REJECTED]",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 2
+                    }
+                },
+                "type": "object"
+            },
+            "TransactionListRequest": {
+                "title": "List transactions request",
+                "description": "List transactions with params given",
+                "required": [],
+                "properties": {
+                    "order_by": {
+                        "title": "order_by",
+                        "description": "Ordenation type [desc|asc]",
+                        "type": "string",
+                        "format": "string",
+                        "example": "asc"
+                    },
+                    "status_id": {
+                        "title": "status_id",
+                        "description": "Status of the transaction",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 2
+                    },
+                    "category_id": {
+                        "title": "category_id",
+                        "description": "Category of the transaction",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "page": {
+                        "title": "page",
+                        "description": "Pagination page",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 2
+                    },
+                    "per_page": {
+                        "title": "per_page",
+                        "description": "Number of items in a page",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 15
+                    }
+                },
+                "type": "object"
+            },
+            "TransactionPendingDepositsRequest": {
+                "title": "List deposit pending transactions request",
+                "description": "List deposit pending transactions with params given",
+                "required": [],
+                "properties": {
+                    "order_by": {
+                        "title": "order_by",
+                        "description": "Ordenation type [desc|asc]",
+                        "type": "string",
+                        "format": "string",
+                        "example": "asc"
+                    },
+                    "page": {
+                        "title": "page",
+                        "description": "Pagination page",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 2
+                    },
+                    "per_page": {
+                        "title": "per_page",
+                        "description": "Number of items in a page",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 15
+                    }
+                },
+                "type": "object"
+            },
+            "TransactionPurchaseRequest": {
+                "title": "Create purchase transaction",
+                "description": "Create purchase transaction request",
+                "required": [
+                    "description",
+                    "amount"
+                ],
+                "properties": {
+                    "description": {
+                        "title": "description",
+                        "description": "Description of the purchase",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Laptop Dell"
+                    },
+                    "amount": {
+                        "title": "amount",
+                        "description": "Value of the purchase",
+                        "type": "number",
+                        "format": "float64",
+                        "example": 100
+                    }
+                },
+                "type": "object"
+            },
+            "UserCreateRequest": {
+                "title": "User create request",
+                "description": "User create with body data",
+                "required": [
+                    "name",
+                    "email",
+                    "password",
+                    "username"
+                ],
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "description": "User name",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Max"
+                    },
+                    "username": {
+                        "title": "username",
+                        "description": "Username of the User",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Max02"
+                    },
+                    "email": {
+                        "title": "email",
+                        "description": "User email",
+                        "type": "string",
+                        "format": "string",
+                        "example": "max@max.com"
+                    },
+                    "password": {
+                        "title": "password",
+                        "description": "User password",
+                        "type": "string",
+                        "format": "string",
+                        "example": "password123"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "description": "Laravel Sanctum token authentication",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
