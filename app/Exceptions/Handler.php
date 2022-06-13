@@ -2,7 +2,12 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,5 +42,30 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        switch (true) {
+            case $exception instanceof AuthorizationException:
+            case $exception instanceof AuthenticationException:
+            case $exception instanceof AccessDeniedHttpException:
+                return response()->json([
+                    'message' => $exception->getMessage()
+                ], HttpResponse::HTTP_UNAUTHORIZED);
+            case $exception instanceof ValidationException:
+                return response()->json([
+                    'message' => $exception->getMessage(),
+                    'errors'  => $exception->errors()
+                ], HttpResponse::HTTP_UNPROCESSABLE_ENTITY);
+            default:
+                $message = __('exceptions.unexpected_error');
+                if (boolval(env('APP_DEBUG'))) {
+                    $message = $exception->getMessage();
+                }
+                return response()->json([
+                    'message' => $message
+                ], HttpResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
